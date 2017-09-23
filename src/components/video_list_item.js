@@ -1,6 +1,6 @@
 import React from 'react';
 
-const VideoListItem = ({video}) => {
+const VideoListItem = ({video, onVideoSelect}) => {
 	// {video} as parameter is a syntax sugar for: use props as argument, then: const video = props.video
 	//  may console.log({video}) to see what properties we have here
 	
@@ -9,7 +9,7 @@ const VideoListItem = ({video}) => {
 
 
 	return(
-		<li className="list-group-item"> 
+		<li onClick = {()=> onVideoSelect(video)} className="list-group-item"> 
 			<div className="video-list media">
 				<div className="media-left">
 					<img className="media-object" src= { imageUrl }/>				

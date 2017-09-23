@@ -4,6 +4,7 @@ const VideoDetail = ({video})=>{
 	// do not need to store any state in this component
 	// so we just use a functional component not a class component
 	// const url = 'https://www.youtube.come/embed/' + videoId; ES6 below:
+	
 	if(!video){
 		return <div> Loading...</div>;
 	}
