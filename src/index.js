@@ -1,9 +1,12 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import YTSearch from 'youtube-api-search';
 
-import SearchBar from './components/search_bar';
 
+import SearchBar from './components/search_bar';
+import VideoList from './components/video_list';
+import VideoDetail from './components/video_detail';
 
 const API_KEY = 'AIzaSyCbqBUuIrWH74oikNsxj35eOPJ2YNT5h3A';
 
@@ -15,21 +18,37 @@ class App extends Component {
 		super(props);
 
 		this.state = { 
-			videos: [] 
+			videos: [],
+			selectedVideo: null 
 		};
+		// do initial search so that before any search sth can show on screen
+		this.videoSearch('surfboards');
 
-		YTSearch({key: API_KEY, term:'surfboard'}, (videos)=>{
-	       this.setState({ videos });
-	       // ES6 syntax sugar for ({videos: videos}), only works when key and variable name are the same
+		
+	}
+
+	videoSearch(term){
+		YTSearch({key: API_KEY, term: term}, (videos)=>{
+	       this.setState({ 
+	       	    videos: videos,
+	       	    selectedVideo: videos[0] 
+	       	});
+	       // ES6 syntax sugar this.setState({ videos }) for ({videos: videos}), only works when key and variable name are the same
         });
 	}
 
 	render(){
-
+		const videoSearch = _.debounce((term)=> {this.videoSearch(term)}, 300);
+		
 		return(
 				<div>
 
-					<SearchBar />
+					<SearchBar onSearchTermChange = {videoSearch}/>
+					<VideoDetail video={this.state.selectedVideo} />
+					<VideoList 
+						onVideoSelect = {selectedVideo => this.setState({selectedVideo})}
+						videos = { this.state.videos} />
+
 				</div>
 		)
 
